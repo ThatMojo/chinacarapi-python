@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chinacarapi"
+version = "0.1.0"
+description = "Official Python client for ChinaCarAPI: Chinese used-car data from Dongchedi and Che168 as one REST API, in English."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "ChinaCarAPI", email = "support@chinacarapi.com" }]
+keywords = [
+    "china car api",
+    "chinese car api",
+    "dongchedi api",
+    "che168 api",
+    "chinese used car data",
+    "china car export",
+    "vehicle data api",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["requests>=2.20"]
+
+[project.urls]
+Homepage = "https://chinacarapi.com"
+Documentation = "https://chinacarapi.com/documentation"
+Source = "https://github.com/ThatMojo/chinacarapi-python"
+
+[tool.hatch.build.targets.wheel]
+packages = ["chinacarapi"]
