@@ -16,7 +16,7 @@ without scrapers, captchas, proxies or Chinese-language parsing.
 ## Install
 
 ```bash
-pip install git+https://github.com/ThatMojo/chinacarapi-python
+pip install chinacarapi
 ```
 
 Requires Python 3.8+.

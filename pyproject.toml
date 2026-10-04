@@ -26,7 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["encarapi @ https://github.com/ThatMojo/encarapi-python/archive/refs/heads/main.zip"]
+dependencies = ["encarapi>=1.0.0"]
 
 [project.urls]
 Homepage = "https://chinacarapi.com"
@@ -36,5 +36,3 @@ Source = "https://github.com/ThatMojo/chinacarapi-python"
 [tool.hatch.build.targets.wheel]
 packages = ["chinacarapi"]
 
-[tool.hatch.metadata]
-allow-direct-references = true
