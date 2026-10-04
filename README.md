@@ -16,10 +16,14 @@ without scrapers, captchas, proxies or Chinese-language parsing.
 ## Install
 
 ```bash
-pip install git+https://github.com/ThatMojo/chinacarapi-python
+pip install chinacarapi
 ```
 
-Requires Python 3.8+ and `requests`.
+Requires Python 3.8+.
+
+This package is the China entry point of [`encarapi`](https://pypi.org/project/encarapi/),
+the official client for Korean **and** Chinese used car data. Need both markets? Use
+`EnCarAPI(key)` with `client.korea` and `client.china` (exported here as well).
 
 ## Quick start
 

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "chinacarapi"
-version = "0.1.0"
+version = "1.0.0"
 description = "Official Python client for ChinaCarAPI: Chinese used-car data from Dongchedi and Che168 as one REST API, in English."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -26,7 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["requests>=2.20"]
+dependencies = ["encarapi>=1.0.0"]
 
 [project.urls]
 Homepage = "https://chinacarapi.com"
