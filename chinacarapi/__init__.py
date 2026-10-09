@@ -7,4 +7,4 @@ Chinese used car data). It keeps the ``chinacarapi`` name and API:
 from encarapi import ChinaCarAPI, ChinaCarAPIError, EnCarAPI, MissingApiKeyError
 
 __all__ = ["ChinaCarAPI", "ChinaCarAPIError", "MissingApiKeyError", "EnCarAPI"]
-__version__ = "1.0.0"
+__version__ = "1.0.1"
