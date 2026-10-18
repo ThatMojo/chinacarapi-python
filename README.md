@@ -53,6 +53,7 @@ client for the paid API.
 |---|---|---|
 | `client.catalog(**filters)` | `GET /api/catalog` | Search and filter listings (Dongchedi + Che168) |
 | `client.vehicle(id)` | `GET /api/vehicle/:id` | Full record of one car |
+| `client.vehicle_by_url(url)` | `GET /api/vehicle/by-url` | Same record by Che168/Dongchedi listing link (desktop, mobile or app) |
 | `client.inspection(id)` | `GET /api/inspection/:id` | Inspection report |
 | `client.specs(trim_id)` | `GET /api/specs/:trimId` | Autohome trim sheet of a Che168 car (cc, kW, hp, torque, emission standard, weights, EV battery) |
 | `client.bulk(ids)` | `POST /api/vehicle/bulk` | Up to 500 records per call |
@@ -63,7 +64,7 @@ client for the paid API.
 
 **Catalog filters:** `source` (`dongchedi`, `che168`), `duplicates=include`, `make`, `model`,
 `year_min`/`year_max`, `reg_year_min`/`reg_year_max`, `price_min`/`price_max` (CNY),
-`mileage_max`, `city`, `fuel`, `has_report`, `export_ready` (China's 180-day rule for used-car
+`mileage_max`, `power_min`/`power_max` (hp), `city`, `fuel`, `has_report`, `export_ready` (China's 180-day rule for used-car
 exports), `updated_since`, `sort`, `page`, `limit`, `lang="zh"` for the original Chinese values.
 
 Full reference (OpenAPI 3.1, 13 languages): [chinacarapi.com/documentation](https://chinacarapi.com/documentation?utm_source=readme&utm_medium=chinacarapi-python)
