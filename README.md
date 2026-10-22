@@ -55,27 +55,50 @@ client for the paid API.
 | `client.vehicle(id)` | `GET /api/vehicle/:id` | Full record of one car |
 | `client.vehicle_by_url(url)` | `GET /api/vehicle/by-url` | Same record by Che168/Dongchedi listing link (desktop, mobile or app) |
 | `client.inspection(id)` | `GET /api/inspection/:id` | Inspection report |
-| `client.specs(trim_id)` | `GET /api/specs/:trimId` | Autohome trim sheet of a Che168 car (cc, kW, hp, torque, emission standard, weights, EV battery) |
+| `client.specs(trim_id, **params)` | `GET /api/specs/:trimId` | Autohome trim sheet of a Che168 car (cc, kW, hp, torque, emission standard, weights, EV battery) |
 | `client.bulk(ids)` | `POST /api/vehicle/bulk` | Up to 500 records per call |
 | `client.changes(since=... \| cursor=...)` | `GET /api/catalog/changes` | Change feed: new cars, price changes, removals |
-| `client.export_csv()` | `GET /api/catalog/export` | Full catalog as CSV |
-| `client.enums()` | `GET /api/enums` | Makes, fuels, cities, sources with counts |
+| `client.export_csv(**params)` | `GET /api/catalog/export` | Full catalog as CSV text |
+| `client.export_to_file(path, **params)` | `GET /api/catalog/export` | Full catalog streamed to a file (not held in memory): `{"path", "bytes", "generated_at"}` |
+| `client.enums(**params)` | `GET /api/enums` | Makes, fuels, cities, sources with counts |
 | `client.models(make)` | `GET /api/models` | Models of one make |
 
 **Catalog filters:** `source` (`dongchedi`, `che168`), `duplicates=include`, `make`, `model`,
 `year_min`/`year_max`, `reg_year_min`/`reg_year_max`, `price_min`/`price_max` (CNY),
 `mileage_max`, `power_min`/`power_max` (hp), `city`, `fuel`, `has_report`, `export_ready` (China's 180-day rule for used-car
-exports), `updated_since`, `sort`, `page`, `limit`, `lang="zh"` for the original Chinese values.
+exports), `updated_since`, `sort`, `page`, `limit`, `lang`.
+
+**Languages:** `lang="zh"` returns the original Chinese values, `lang="ru"` Russian values for the fixed
+fields (fuel, transmission, drivetrain, colours, seller type, condition, vehicle class), city names and
+equipment names; make, model and trim names stay Latin. Works on `catalog`, `vehicle`, `vehicle_by_url`,
+`bulk` and `specs`. `enums(lang="ru")` adds `nameRu` to fuels and cities, `export_csv(lang="ru")` and
+`export_to_file(path, lang="ru")` return the label columns in Russian.
 
 Full reference (OpenAPI 3.1, 13 languages): [chinacarapi.com/documentation](https://chinacarapi.com/documentation?utm_source=readme&utm_medium=chinacarapi-python)
 
 ## Keeping a local copy
 
+Export to a file, start the change feed at the export's timestamp, then keep the cursor (Business/Scale):
+
 ```python
-first = client.changes(since="2026-10-01T00:00:00Z")
-# store first["nextCursor"], then poll every few minutes:
-nxt = client.changes(cursor=first["nextCursor"])
+# 1) Baseline, streamed to disk; generated_at = the export's x-generated-at header
+export = client.export_to_file("china-catalog.csv")   # {"path", "bytes", "generated_at"}
+import_csv(export["path"])                             # your import: upsert by source + id
+
+# 2) First sync from the export's timestamp (not the time of your download)
+for change in client.iterate_changes(since=export["generated_at"]):
+    # change["type"]: "new" | "price" | "removed" | "relisted"; apply idempotently
+    ...
+save_cursor(client.last_cursor)
+
+# 3) Then every few minutes from the saved cursor
+for change in client.iterate_changes(cursor=load_cursor()):
+    ...
+save_cursor(client.last_cursor)
 ```
+
+`generated_at` lies a few minutes before the file's data snapshot, so the first feed page can repeat a few
+events that are already in the file: apply them as upserts.
 
 ## Why ChinaCarAPI?
 
